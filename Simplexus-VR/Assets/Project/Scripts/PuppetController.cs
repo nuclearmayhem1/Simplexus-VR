@@ -33,7 +33,9 @@ public class PuppetController : MonoBehaviour
         Vector3 moveVector = new Vector3(dirMove.x, isJumping? -gravity * 2 * Time.deltaTime : 0 + (gravity * Time.deltaTime), dirMove.y);
         Vector3 turnVector = new Vector3(0, dirTurn.x * Time.deltaTime, 0);
 
-        character.Move(moveVector * moveSpeed);
+        
+
+        character.Move(transform.rotation * moveVector * moveSpeed);
         transform.Rotate(turnVector * turnSpeed);
 
         leftHandTransform.localPosition = posLeftHand;
