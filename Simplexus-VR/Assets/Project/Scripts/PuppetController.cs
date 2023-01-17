@@ -19,7 +19,7 @@ public class PuppetController : MonoBehaviour
 
     public float moveSpeed = 1, turnSpeed = 1;
 
-    public float gravity = 1;
+    public float gravity = -1;
 
     private void Update()
     {
@@ -30,8 +30,8 @@ public class PuppetController : MonoBehaviour
         bool isJumping = inputJump.action.ReadValue<bool>();
 
         //Move
-        Vector3 moveVector = new Vector3(dirMove.x, 0 + gravity, dirMove.y);
-        Vector3 turnVector = new Vector3(0, dirTurn.x, 0);
+        Vector3 moveVector = new Vector3(dirMove.x, isJumping? -gravity * 2 * Time.deltaTime : 0 + (gravity * Time.deltaTime), dirMove.y);
+        Vector3 turnVector = new Vector3(0, dirTurn.x * Time.deltaTime, 0);
 
         character.Move(moveVector * moveSpeed);
         transform.Rotate(turnVector * turnSpeed);
