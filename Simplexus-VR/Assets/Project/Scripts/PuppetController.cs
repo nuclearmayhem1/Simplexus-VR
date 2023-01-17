@@ -31,7 +31,7 @@ public class PuppetController : MonoBehaviour
 
         //Move
         Vector3 moveVector = new Vector3(dirMove.x, 0 + gravity, dirMove.y);
-        Vector3 turnVector = new Vector3(dirTurn.x, 0, 0);
+        Vector3 turnVector = new Vector3(0, dirTurn.x, 0);
 
         character.Move(moveVector * moveSpeed);
         transform.Rotate(turnVector * turnSpeed);
