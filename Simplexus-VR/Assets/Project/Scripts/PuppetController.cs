@@ -21,6 +21,8 @@ public class PuppetController : MonoBehaviour
 
     public float gravity = -1;
 
+    public float handDistanceMultiplier = 2;
+
     private void Update()
     {
         Vector2 dirMove = inputMove.action.ReadValue<Vector2>();
@@ -38,8 +40,8 @@ public class PuppetController : MonoBehaviour
         character.Move(transform.rotation * moveVector * moveSpeed);
         transform.Rotate(turnVector * turnSpeed);
 
-        leftHandTransform.localPosition = posLeftHand;
-        rightHandTransform.localPosition = posRightHand;
+        leftHandTransform.localPosition = transform.rotation * posLeftHand * handDistanceMultiplier;
+        rightHandTransform.localPosition = transform.rotation * posRightHand * handDistanceMultiplier;
 
 
     }
