@@ -46,8 +46,8 @@ public class PuppetController : MonoBehaviour
 
         leftHandTransform.localPosition = posLeftHand * handDistanceMultiplier;
         rightHandTransform.localPosition = posRightHand * handDistanceMultiplier;
-        leftHandTransform.localRotation = rotLeftHand;
-        rightHandTransform.localRotation = rotRightHand;
+        leftHandTransform.localRotation = rotLeftHand * Quaternion.Euler(0,0,90);
+        rightHandTransform.localRotation = rotRightHand * Quaternion.Euler(0, 180, -90);
 
     }
 
