@@ -2555,6 +2555,8 @@ MonoBehaviour:
   turnSpeed: 360
   gravity: -1
   handDistanceMultiplier: 100
+  leftHandOffset: {x: 0.5359816, y: -0.4112735, z: -0.44882625, w: -0.58492124}
+  rightHandOffset: {x: -0.521331, y: 0.5213309, z: -0.4777174, w: -0.47771758}
 --- !u!114 &2403671401846954207
 MonoBehaviour:
   m_ObjectHideFlags: 0

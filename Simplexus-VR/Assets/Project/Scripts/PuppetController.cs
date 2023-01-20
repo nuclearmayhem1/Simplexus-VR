@@ -25,6 +25,9 @@ public class PuppetController : MonoBehaviour
 
     public float handDistanceMultiplier = 2;
 
+    public Quaternion leftHandOffset;
+    public Quaternion rightHandOffset;
+
     private void Update()
     {
         Vector2 dirMove = inputMove.action.ReadValue<Vector2>();
@@ -46,8 +49,8 @@ public class PuppetController : MonoBehaviour
 
         leftHandTransform.localPosition = posLeftHand * handDistanceMultiplier;
         rightHandTransform.localPosition = posRightHand * handDistanceMultiplier;
-        leftHandTransform.localRotation = rotLeftHand * Quaternion.Euler(0,0,90);
-        rightHandTransform.localRotation = rotRightHand * Quaternion.Euler(0, 180, -90);
+        leftHandTransform.localRotation = rotLeftHand * leftHandOffset;
+        rightHandTransform.localRotation = rotRightHand * rightHandOffset;
 
     }
 
