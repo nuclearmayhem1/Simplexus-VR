@@ -8,8 +8,10 @@ public class PuppetController : MonoBehaviour
 {
     public InputActionProperty inputMove;
     public InputActionProperty inputTurn;
-    public InputActionProperty inputLeftHand;
-    public InputActionProperty inputRightHand;
+    public InputActionProperty inputLeftHandPos;
+    public InputActionProperty inputRightHandPos;
+    public InputActionProperty inputLeftHandRot;
+    public InputActionProperty inputRightHandRot;
     public InputActionProperty inputJump;
 
     public Transform leftHandTransform;
@@ -27,8 +29,10 @@ public class PuppetController : MonoBehaviour
     {
         Vector2 dirMove = inputMove.action.ReadValue<Vector2>();
         Vector2 dirTurn = inputTurn.action.ReadValue<Vector2>();
-        Vector3 posLeftHand = inputLeftHand.action.ReadValue<Vector3>();
-        Vector3 posRightHand = inputRightHand.action.ReadValue<Vector3>();
+        Vector3 posLeftHand = inputLeftHandPos.action.ReadValue<Vector3>();
+        Vector3 posRightHand = inputRightHandPos.action.ReadValue<Vector3>();
+        Quaternion rotLeftHand = inputLeftHandRot.action.ReadValue<Quaternion>();
+        Quaternion rotRightHand = inputRightHandRot.action.ReadValue<Quaternion>();
         bool isJumping = inputJump.action.ReadValue<bool>();
 
         //Move
@@ -40,9 +44,10 @@ public class PuppetController : MonoBehaviour
         character.Move(transform.rotation * moveVector * moveSpeed);
         transform.Rotate(turnVector * turnSpeed);
 
-        leftHandTransform.localPosition = transform.rotation * posLeftHand * handDistanceMultiplier;
-        rightHandTransform.localPosition = transform.rotation * posRightHand * handDistanceMultiplier;
-
+        leftHandTransform.localPosition = posLeftHand * handDistanceMultiplier;
+        rightHandTransform.localPosition = posRightHand * handDistanceMultiplier;
+        leftHandTransform.localRotation = rotLeftHand;
+        rightHandTransform.localRotation = rotRightHand;
 
     }
 
