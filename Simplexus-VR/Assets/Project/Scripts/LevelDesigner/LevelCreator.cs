@@ -2,31 +2,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
+using UnityEngine.UI;
 
 public class LevelCreator : MonoBehaviour
 {
     public LevelSettings settings;
     private string path = "Assets/Project/Levels/";
+    public TMP_InputField levelNameField;
+    public Slider diameterSlider;
+    public Level currentLevel = null;
+    private bool lockSettings = true;
+    public Transform levelOrigin;
+    public GameObject newLevelPrefab;
+    public TMP_Text newLevelText;
 
     public void OnSettingsChanged()
     {
-        
+        if (!lockSettings)
+        {
+            settings.name = levelNameField.text;
+            settings.diameter = diameterSlider.value;
+            currentLevel.Terrain.transform.localScale = Vector3.one * settings.diameter;
+        }
     }
 
     public void NewLevel()
     {
-        Debug.Log("New map");
+        if (currentLevel == null)
+        {
+            Debug.Log("New level");
+            GameObject temp = Instantiate(newLevelPrefab, levelOrigin);
+            currentLevel = temp.GetComponent<Level>();
+            lockSettings = false;
+            newLevelText.text = "Lock settings";
+        }
+        else
+        {
+            if (!lockSettings)
+            {
+                lockSettings = true;
+                newLevelText.text = "Clear level";
+                diameterSlider.interactable = false;
+                levelNameField.interactable = false;
+            }
+            else
+            {
+                Destroy(currentLevel.gameObject);
+                currentLevel = null;
+                newLevelText.text = "New level";
+                diameterSlider.interactable = true;
+                levelNameField.interactable = true;
+            }
+        }
     }
 
     public void SaveLevel()
     {
-        Debug.Log("Save map");
-        File.Create(path + settings.name);
+        Debug.Log("Save level");
+        //File.Create(path + settings.name);
     }
 
     public void LoadLevel()
     {
-        Debug.Log("Load map");
+        lockSettings = true;
+        Debug.Log("Load level");
+        diameterSlider.interactable = false;
+        levelNameField.interactable = false;
     }
 
 }
