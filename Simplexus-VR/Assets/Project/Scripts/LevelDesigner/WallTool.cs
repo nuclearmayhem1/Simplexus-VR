@@ -11,7 +11,6 @@ public class WallTool : XRGrabInteractable
     public Transform hitPoint;
 
     public GameObject lastPole = null;
-    public bool buildingWall = false;
 
     private bool held = false;
     public LineRenderer lineRenderer;
@@ -26,12 +25,16 @@ public class WallTool : XRGrabInteractable
 
     public Material previewMaterial;
     public Color wrong, correct;
-    public float maxLenght = 0.5f;
+    public float maxLenght = 1f, minLenght = 0.25f;
 
 
     private Quaternion rotationAwayFromSurface = Quaternion.identity;
 
+    public Dictionary<GameObject, WallConnection> wallConnections = null;
 
+    private GameObject newPole = null;
+
+    private GameObject hoveredPole = null;
 
     private void Update()
     {
@@ -42,6 +45,7 @@ public class WallTool : XRGrabInteractable
             if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out RaycastHit hitInfo, 10, LayerMask.GetMask("Terrain")))
             {
                 currentLevel = hitInfo.transform.GetComponentInParent<Level>();
+                wallConnections = currentLevel.wallConnections;
 
                 hitPoint.position = hitInfo.collider.ClosestPoint(hitInfo.point);
                 rotationAwayFromSurface = Quaternion.LookRotation(hitPoint.position - hitInfo.transform.position) * Quaternion.Euler(90, 0, 0);
@@ -60,6 +64,8 @@ public class WallTool : XRGrabInteractable
                 polePreview.SetActive(false);
                 wallPreveiw.SetActive(false);
                 currentLevel = null;
+                wallConnections = null;
+                canPlace = false;
             }
         }
         else
@@ -68,27 +74,59 @@ public class WallTool : XRGrabInteractable
             polePreview.SetActive(false);
             wallPreveiw.SetActive(false);
             currentLevel = null;
+            wallConnections = null;
+            canPlace = false;
         }
     }
 
     public void BuildPreview()
     {
-        if (!buildingWall)
+        if (lastPole == null)
         {
             previewMaterial.color = correct;
             polePreview.SetActive(true);
+            newPole = polePrefab;
+            canPlace = true;
         }
-        else if (lastPole != null)
+        else if (hoveredPole == null)
         {
+            newPole = polePrefab;
             Vector3 averagePos = (lastPole.transform.position + hitPoint.position) / 2;
             wallPreveiw.transform.position = averagePos;
             Vector3 wallSize = wallPrefab.transform.localScale;
             float distance = Vector3.Distance(lastPole.transform.position, hitPoint.position);
             wallSize.z = distance;
-            wallPreveiw.transform.rotation = Quaternion.LookRotation(hitPoint.position - lastPole.transform.position);
+
+            wallPreveiw.transform.rotation = Quaternion.LookRotation(hitPoint.position - lastPole.transform.position, lastPole.transform.up);
             wallPreveiw.transform.localScale = wallSize;
 
-            if (distance > maxLenght)
+            if (distance > maxLenght || distance < minLenght)
+            {
+                canPlace = false;
+                previewMaterial.color = wrong;
+            }
+            else
+            {
+                canPlace = true;
+                previewMaterial.color = correct;
+            }
+
+            polePreview.SetActive(true);
+            wallPreveiw.SetActive(true);
+        }
+        else
+        {
+            newPole = hoveredPole;
+            Vector3 averagePos = (lastPole.transform.position + hoveredPole.transform.position) / 2;
+            wallPreveiw.transform.position = averagePos;
+            Vector3 wallSize = wallPrefab.transform.localScale;
+            float distance = Vector3.Distance(lastPole.transform.position, hoveredPole.transform.position);
+            wallSize.z = distance;
+
+            wallPreveiw.transform.rotation = Quaternion.LookRotation(hoveredPole.transform.position - lastPole.transform.position, lastPole.transform.up);
+            wallPreveiw.transform.localScale = wallSize;
+
+            if (distance > maxLenght || distance < minLenght)
             {
                 canPlace = false;
                 previewMaterial.color = wrong;
@@ -108,10 +146,9 @@ public class WallTool : XRGrabInteractable
     {
         base.OnActivated(args);
 
-        if (!buildingWall)
+        if (canPlace)
         {
-            lastPole = Instantiate(polePrefab, hitPoint.position, hitPoint.rotation, currentLevel.PlacedObjects.transform);
-            buildingWall = true;
+            lastPole = currentLevel.PlacePole(lastPole, newPole, wallPrefab, hitPoint);
         }
 
     }
@@ -131,7 +168,9 @@ public class WallTool : XRGrabInteractable
     }
     public void ResetTool()
     {
-        buildingWall = false;
+        currentLevel = null;
+        wallConnections = null;
+        lastPole = null;
         Debug.Log("Reset");
     }
 
