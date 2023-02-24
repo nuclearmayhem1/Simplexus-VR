@@ -12,7 +12,33 @@ public class Level : MonoBehaviour
 
     public Dictionary<GameObject, WallConnection> wallConnections = new Dictionary<GameObject, WallConnection>();
 
-
+    public bool DoesConnectionExist(GameObject lastPole, GameObject newPole)
+    {
+        if (lastPole == null || newPole == null)
+        {
+            return false;
+        }
+        else if (wallConnections.ContainsKey(lastPole))
+        {
+            WallConnection connection = wallConnections[lastPole];
+            if (connection.incomingPoles.Contains(newPole))
+            {
+                return true;
+            }
+            else if (connection.outgoingPoles.Contains(newPole))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     //Walls
     public GameObject PlacePole(GameObject lastPole, GameObject newPole, GameObject wallPrefab, Transform hitPoint)

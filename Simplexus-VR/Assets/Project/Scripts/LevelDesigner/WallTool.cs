@@ -27,6 +27,7 @@ public class WallTool : XRGrabInteractable
     public Color wrong, correct;
     public float maxLenght = 1f, minLenght = 0.25f;
 
+    public Material selectedMaterial;
 
     private Quaternion rotationAwayFromSurface = Quaternion.identity;
 
@@ -36,30 +37,76 @@ public class WallTool : XRGrabInteractable
 
     private GameObject hoveredPole = null;
 
+    private static readonly string[] checkedLayers = { "Terrain", "Pole" };
+
     private void Update()
     {
         if (held)
         {
-            lineRenderer.enabled = true;
-
-            if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out RaycastHit hitInfo, 10, LayerMask.GetMask("Terrain")))
+            if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out RaycastHit hitInfo, 10, LayerMask.GetMask(checkedLayers)))
             {
-                currentLevel = hitInfo.transform.GetComponentInParent<Level>();
-                wallConnections = currentLevel.wallConnections;
+                if (hitInfo.collider.gameObject.layer == 6)
+                {
+                    currentLevel = hitInfo.transform.GetComponentInParent<Level>();
+                    wallConnections = currentLevel.wallConnections;
 
-                hitPoint.position = hitInfo.collider.ClosestPoint(hitInfo.point);
-                rotationAwayFromSurface = Quaternion.LookRotation(hitPoint.position - hitInfo.transform.position) * Quaternion.Euler(90, 0, 0);
-                hitPoint.rotation = rotationAwayFromSurface;
-                hitPoint.Translate(new Vector3(0, polePrefab.transform.localScale.y, 0), Space.Self);
+                    hitPoint.position = hitInfo.collider.ClosestPoint(hitInfo.point);
+                    rotationAwayFromSurface = Quaternion.LookRotation(hitPoint.position - hitInfo.transform.position) * Quaternion.Euler(90, 0, 0);
+                    hitPoint.rotation = rotationAwayFromSurface;
+                    hitPoint.Translate(new Vector3(0, polePrefab.transform.localScale.y, 0), Space.Self);
 
-                lineRenderer.enabled = true;
-                lineRenderer.SetPosition(0, rayOrigin.position);
-                lineRenderer.SetPosition(1, hitPoint.position);
+                    lineRenderer.enabled = true;
+                    lineRenderer.SetPosition(0, rayOrigin.position);
+                    lineRenderer.SetPosition(1, hitPoint.position);
+                    if (hoveredPole != null)
+                    {
+                        Material[] newMaterials = new Material[1];
 
-                BuildPreview();
+                        newMaterials[0] = hoveredPole.GetComponent<MeshRenderer>().materials[0];
+                        hoveredPole.GetComponent<MeshRenderer>().materials = newMaterials;
+                        hoveredPole = null;
+                    }
+                    BuildPreview();
+                }
+                else if (hitInfo.collider.gameObject.layer == 8)
+                {
+                    if (hoveredPole != null && hitInfo.collider.gameObject != hoveredPole)
+                    {
+                        Material[] newMaterials2 = new Material[1];
+
+                        newMaterials2[0] = hoveredPole.GetComponent<MeshRenderer>().materials[0];
+                        hoveredPole.GetComponent<MeshRenderer>().materials = newMaterials2;
+                        hoveredPole = null;
+                    }
+                    currentLevel = hitInfo.transform.GetComponentInParent<Level>();
+                    wallConnections = currentLevel.wallConnections;
+                    lineRenderer.enabled = true;
+
+                    hoveredPole = hitInfo.collider.gameObject;
+
+                    lineRenderer.SetPosition(0, rayOrigin.position);
+                    lineRenderer.SetPosition(1, hoveredPole.transform.position);
+
+                    Material[] newMaterials = new Material[2];
+
+                    newMaterials[0] = hoveredPole.GetComponent<MeshRenderer>().materials[0];
+                    newMaterials[1] = selectedMaterial;
+                    hoveredPole.GetComponent<MeshRenderer>().materials = newMaterials;
+
+                    BuildPreview();
+                }
+
             }
             else
             {
+                if (hoveredPole != null)
+                {
+                    Material[] newMaterials = new Material[1];
+
+                    newMaterials[0] = hoveredPole.GetComponent<MeshRenderer>().materials[0];
+                    hoveredPole.GetComponent<MeshRenderer>().materials = newMaterials;
+                    hoveredPole = null;
+                }
                 lineRenderer.enabled = false;
                 polePreview.SetActive(false);
                 wallPreveiw.SetActive(false);
@@ -76,19 +123,46 @@ public class WallTool : XRGrabInteractable
             currentLevel = null;
             wallConnections = null;
             canPlace = false;
+            if (hoveredPole != null)
+            {
+                Material[] newMaterials = new Material[1];
+
+                newMaterials[0] = hoveredPole.GetComponent<MeshRenderer>().materials[0];
+                hoveredPole.GetComponent<MeshRenderer>().materials = newMaterials;
+                hoveredPole = null;
+            }
         }
     }
 
     public void BuildPreview()
     {
-        if (lastPole == null)
+        if (currentLevel.DoesConnectionExist(lastPole, hoveredPole))
+        {
+            polePreview.SetActive(false);
+            wallPreveiw.SetActive(false);
+            canPlace = false;
+        }
+        else if (lastPole == hoveredPole && lastPole != null)
+        {
+            polePreview.SetActive(false);
+            wallPreveiw.SetActive(false);
+            canPlace = false;
+        }
+        else if (lastPole == null && hoveredPole == null)
         {
             previewMaterial.color = correct;
             polePreview.SetActive(true);
+            wallPreveiw.SetActive(false);
             newPole = polePrefab;
             canPlace = true;
         }
-        else if (hoveredPole == null)
+        else if (lastPole == null && hoveredPole != null)
+        {
+            polePreview.SetActive(false);
+            wallPreveiw.SetActive(false);
+            canPlace = false;
+        }
+        else if (lastPole != null && hoveredPole == null)
         {
             newPole = polePrefab;
             Vector3 averagePos = (lastPole.transform.position + hitPoint.position) / 2;
@@ -114,7 +188,7 @@ public class WallTool : XRGrabInteractable
             polePreview.SetActive(true);
             wallPreveiw.SetActive(true);
         }
-        else
+        else if (lastPole != null && hoveredPole != null)
         {
             newPole = hoveredPole;
             Vector3 averagePos = (lastPole.transform.position + hoveredPole.transform.position) / 2;
@@ -137,7 +211,7 @@ public class WallTool : XRGrabInteractable
                 previewMaterial.color = correct;
             }
 
-            polePreview.SetActive(true);
+            polePreview.SetActive(false);
             wallPreveiw.SetActive(true);
         }
     }
@@ -149,6 +223,22 @@ public class WallTool : XRGrabInteractable
         if (canPlace)
         {
             lastPole = currentLevel.PlacePole(lastPole, newPole, wallPrefab, hitPoint);
+        }
+        else
+        {
+            if (hoveredPole != null)
+            {
+                lastPole = hoveredPole;
+                Material[] newMaterials = new Material[1];
+
+                newMaterials[0] = hoveredPole.GetComponent<MeshRenderer>().materials[0];
+                hoveredPole.GetComponent<MeshRenderer>().materials = newMaterials;
+                hoveredPole = null;
+            }
+            else
+            {
+                lastPole = null;
+            }
         }
 
     }

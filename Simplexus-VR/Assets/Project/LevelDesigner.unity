@@ -2809,8 +2809,9 @@ MonoBehaviour:
   previewMaterial: {fileID: 2100000, guid: bdca6eb687f62344caab84c19b32af62, type: 2}
   wrong: {r: 1, g: 0, b: 0, a: 0}
   correct: {r: 0.20369065, g: 1, b: 0, a: 0}
-  maxLenght: 0.5
+  maxLenght: 1
   minLenght: 0.25
+  selectedMaterial: {fileID: 2100000, guid: 6fcdbec85bbbd29439a521b50c4b52c2, type: 2}
 --- !u!54 &1155677185
 Rigidbody:
   m_ObjectHideFlags: 0
