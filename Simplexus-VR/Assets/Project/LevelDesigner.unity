@@ -2668,7 +2668,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155677180}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.44, y: 0.74, z: -1.82}
+  m_LocalPosition: {x: -0.33, y: -0.04, z: 1.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2812,6 +2812,15 @@ MonoBehaviour:
   maxLenght: 1
   minLenght: 0.25
   selectedMaterial: {fileID: 2100000, guid: 6fcdbec85bbbd29439a521b50c4b52c2, type: 2}
+  destroyPole: {fileID: 2100000, guid: 8620c1f4658881b47b2cf356ebdc6d7b, type: 2}
+  destroyWall: {fileID: 2100000, guid: 0ede60df1c7900b47876f0c677639539, type: 2}
+  destroyHovered: {fileID: 2100000, guid: b401cb4de1629044a866afc34bd60098, type: 2}
+  adjustPole: {fileID: 2100000, guid: 7313fae7db0a29849ada8ccad055ecfb, type: 2}
+  adjustWall: {fileID: 2100000, guid: 5116e79fa81fdfe4487dc17a026b0f79, type: 2}
+  adjustHovered: {fileID: 2100000, guid: b33cccdb3b5958e4d97bdb94c49b1b02, type: 2}
+  incorrectMat: {fileID: 2100000, guid: 0377e6d96b0f9c646acc519dccf5fbcf, type: 2}
+  correctMat: {fileID: 2100000, guid: 6fcdbec85bbbd29439a521b50c4b52c2, type: 2}
+  mode: 0
 --- !u!54 &1155677185
 Rigidbody:
   m_ObjectHideFlags: 0
