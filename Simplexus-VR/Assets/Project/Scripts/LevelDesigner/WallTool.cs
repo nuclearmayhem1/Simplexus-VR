@@ -39,9 +39,17 @@ public class WallTool : XRGrabInteractable
     public Material incorrectMat, correctMat;
 
     public WallToolMode mode = WallToolMode.Build;
-    public void SetMode(WallToolMode newMode)
+    public void SetBuild()
     {
-        mode = newMode;
+        mode = WallToolMode.Build;
+    }
+    public void SetAdjust()
+    {
+        mode = WallToolMode.Adjust;
+    }
+    public void SetDestroy()
+    {
+        mode = WallToolMode.Destroy;
     }
 
 
