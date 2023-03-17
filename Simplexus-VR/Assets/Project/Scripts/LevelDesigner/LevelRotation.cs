@@ -28,7 +28,6 @@ public class LevelRotation : MonoBehaviour
         {
             currentRotation = deltaRotation * currentRotation;
         }
-
     }
 
     private void Update()
