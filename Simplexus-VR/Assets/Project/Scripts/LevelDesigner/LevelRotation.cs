@@ -10,6 +10,7 @@ public class LevelRotation : MonoBehaviour
     public Quaternion grabRotation = Quaternion.identity;
     public Quaternion currentRotation = Quaternion.identity;
     public Quaternion deltaRotation = Quaternion.identity;
+    public Vector3 grabVector;
 
     private void Start()
     {
@@ -22,7 +23,8 @@ public class LevelRotation : MonoBehaviour
 
         if (activate)
         {
-            grabRotation = Quaternion.LookRotation(transform.position - XRGrab.firstInteractorSelecting.transform.position);
+            grabVector = transform.position - XRGrab.firstInteractorSelecting.transform.position;
+            //grabRotation = Quaternion.LookRotation(transform.position - XRGrab.firstInteractorSelecting.transform.position);
         }
         else
         {
@@ -34,7 +36,8 @@ public class LevelRotation : MonoBehaviour
     {
         if (rotating)
         {
-            deltaRotation = Quaternion.Inverse(grabRotation) * Quaternion.LookRotation(transform.position - XRGrab.firstInteractorSelecting.transform.position);
+            var newVector = transform.position - XRGrab.firstInteractorSelecting.transform.position;
+            deltaRotation = Quaternion.FromToRotation(grabVector, newVector);
             transform.rotation = currentRotation * deltaRotation;
         }
     }
