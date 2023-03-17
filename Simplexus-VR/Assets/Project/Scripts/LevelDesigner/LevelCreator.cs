@@ -16,6 +16,7 @@ public class LevelCreator : MonoBehaviour
     public Transform levelOrigin;
     public GameObject newLevelPrefab;
     public TMP_Text newLevelText;
+    public Transform scaleOffset;
 
     public void OnSettingsChanged()
     {
@@ -24,6 +25,7 @@ public class LevelCreator : MonoBehaviour
             settings.name = levelNameField.text;
             settings.diameter = diameterSlider.value;
             currentLevel.Terrain.transform.localScale = Vector3.one * settings.diameter;
+            scaleOffset.localPosition = new Vector3(0, 0, 0.5f) * diameterSlider.value;
         }
     }
 
