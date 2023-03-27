@@ -25335,6 +25335,7 @@ GameObject:
   - component: {fileID: 6378928639853777295}
   - component: {fileID: 6378928639853777293}
   - component: {fileID: 1011457808}
+  - component: {fileID: 6378928639853777296}
   m_Layer: 0
   m_Name: XRRig 1
   m_TagString: Untagged
@@ -25387,6 +25388,49 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 6378928641073141588}
   m_RequestedTrackingOriginMode: 2
   m_CameraYOffset: 0
+--- !u!114 &6378928639853777296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6378928639853777291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf296fc962d7184ab14ad1841598d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 6378928639853777294}
+  m_MoveSpeed: 1
+  m_EnableStrafe: 1
+  m_UseGravity: 1
+  m_GravityApplicationMode: 0
+  m_ForwardSource: {fileID: 0}
+  m_LeftHandMoveAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Left Hand Move
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 8d2cece6-9f9b-46b8-b325-15cf005db320
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}
+  m_RightHandMoveAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Right Hand Move
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 5053494e-65a6-44bf-a936-f5ee4faa50bb
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
 --- !u!1 &6378928639884758680
 GameObject:
   m_ObjectHideFlags: 0

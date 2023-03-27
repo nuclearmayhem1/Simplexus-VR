@@ -24,6 +24,9 @@ public class PlaceTool : XRGrabInteractable
 
     public GameObject selectedPrefab;
 
+    private bool isPlacing = false;
+    private Quaternion placedAxis = Quaternion.identity;
+
     private void Update()
     {
         if (held)
@@ -44,6 +47,15 @@ public class PlaceTool : XRGrabInteractable
                     lineRenderer.SetPosition(1, hitPoint.position);
 
                     BuildPreview();
+
+                    if (isPlacing)
+                    {
+                        Vector3 targetPos = new Vector3(hitPoint.position.x, previewObject.transform.position.y, hitPoint.position.z);
+
+                        Quaternion newRotation = Quaternion.LookRotation(previewObject.transform.position - hitPoint.position, previewObject.transform.up);
+
+                        previewObject.transform.rotation = newRotation;
+                    }
                 }
             }
             else
@@ -70,6 +82,7 @@ public class PlaceTool : XRGrabInteractable
         {
             Destroy(previewObject);
             previewObject = null;
+            isPlacing = false;
         }
     }
 
@@ -88,8 +101,18 @@ public class PlaceTool : XRGrabInteractable
     protected override void OnActivated(ActivateEventArgs args)
     {
         base.OnActivated(args);
-        previewObject.transform.parent = currentLevel.PlacedObjects.transform;
-        previewObject = null;
+
+        if (!isPlacing)
+        {
+            isPlacing = true;
+            previewObject.transform.parent = currentLevel.PlacedObjects.transform;
+            placedAxis = rotationAwayFromSurface;
+        }
+        else
+        {
+            isPlacing = false;
+            previewObject = null;
+        }
         BuildPreview();
     }
 

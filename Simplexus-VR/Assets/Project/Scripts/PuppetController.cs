@@ -17,11 +17,7 @@ public class PuppetController : MonoBehaviour
     public Transform leftHandTransform;
     public Transform rightHandTransform;
 
-    public CharacterController character;
-
     public float moveSpeed = 1, turnSpeed = 1;
-
-    public float gravity = -1;
 
     public float handDistanceMultiplier = 2;
 
@@ -36,6 +32,14 @@ public class PuppetController : MonoBehaviour
     public Quaternion rotLeftHand = Quaternion.identity;
     public Quaternion rotRightHand = Quaternion.identity;
 
+    public Level level;
+
+    public float gravity = 1;
+
+    public Rigidbody rb;
+
+    private float rotation = 0;
+
     private void Update()
     {
         Vector2 dirMove = inputMove.action.ReadValue<Vector2>();
@@ -47,11 +51,15 @@ public class PuppetController : MonoBehaviour
         bool isJumping = inputJump.action.ReadValue<bool>();
 
         //Move
-        Vector3 moveVector = new Vector3(dirMove.x, isJumping? -gravity * 2 * Time.deltaTime : 0 + (gravity * Time.deltaTime), dirMove.y);
-        Vector3 turnVector = new Vector3(0, dirTurn.x * Time.deltaTime, 0);
+        rotation += dirTurn.x * Time.deltaTime * turnSpeed;
 
-        character.Move(transform.rotation * moveVector * moveSpeed);
-        transform.Rotate(turnVector * turnSpeed);
+        transform.LookAt(level.transform.position);
+        transform.Rotate(new Vector3(-90, 0, 0));
+        transform.RotateAround(transform.up, rotation);
+
+        rb.AddRelativeForce(Vector3.down * gravity, ForceMode.Acceleration);
+        rb.AddRelativeForce(new Vector3(dirMove.x, 0, dirMove.y) * moveSpeed, ForceMode.Acceleration);
+
 
         if (!overrideLeftHand)
         {
