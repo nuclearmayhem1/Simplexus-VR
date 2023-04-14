@@ -942,7 +942,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051723588483638270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.161, y: 2.513, z: 0.04}
+  m_LocalPosition: {x: -0.099, y: 2.496, z: 0.026}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1965,7 +1965,7 @@ MonoBehaviour:
   rotLeftHand: {x: 0, y: 0, z: 0, w: 1}
   rotRightHand: {x: 0, y: 0, z: 0, w: 1}
   level: {fileID: 1483297618}
-  gravity: 1
+  gravity: 25
   rb: {fileID: 1137327255635119155}
 --- !u!114 &1051723588483638269
 MonoBehaviour:

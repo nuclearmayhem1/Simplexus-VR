@@ -51,13 +51,15 @@ public class PuppetController : MonoBehaviour
         bool isJumping = inputJump.action.ReadValue<bool>();
 
         //Move
-        rotation += dirTurn.x * Time.deltaTime * turnSpeed;
 
-        transform.LookAt(level.transform.position);
-        transform.Rotate(new Vector3(-90, 0, 0));
-        transform.RotateAround(transform.up, rotation);
+        Vector3 upDirection = (transform.position - level.transform.position).normalized;
 
-        rb.AddRelativeForce(Vector3.down * gravity, ForceMode.Acceleration);
+        transform.rotation = Quaternion.FromToRotation(transform.up, upDirection);
+
+        Debug.Log(transform.up);
+        Debug.Log(upDirection);
+
+        rb.AddForce(-upDirection * gravity * Time.deltaTime);
         rb.AddRelativeForce(new Vector3(dirMove.x, 0, dirMove.y) * moveSpeed, ForceMode.Acceleration);
 
 
