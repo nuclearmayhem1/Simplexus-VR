@@ -38,9 +38,8 @@ public class PuppetController : MonoBehaviour
 
     public Rigidbody rb;
 
-    private float rotation = 0;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2 dirMove = inputMove.action.ReadValue<Vector2>();
         Vector2 dirTurn = inputTurn.action.ReadValue<Vector2>();
@@ -54,12 +53,10 @@ public class PuppetController : MonoBehaviour
 
         Vector3 upDirection = (transform.position - level.transform.position).normalized;
 
-        transform.rotation = Quaternion.FromToRotation(transform.up, upDirection);
+        transform.rotation = Quaternion.FromToRotation(transform.up, upDirection) * transform.rotation;
+        transform.RotateAround(transform.up, dirTurn.x * Time.deltaTime);
 
-        Debug.Log(transform.up);
-        Debug.Log(upDirection);
-
-        rb.AddForce(-upDirection * gravity * Time.deltaTime);
+        rb.AddForce(upDirection * gravity * Time.deltaTime);
         rb.AddRelativeForce(new Vector3(dirMove.x, 0, dirMove.y) * moveSpeed, ForceMode.Acceleration);
 
 
