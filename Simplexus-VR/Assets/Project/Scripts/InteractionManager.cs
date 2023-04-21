@@ -8,11 +8,11 @@ public class InteractionManager : MonoBehaviour
 {
     public float radius = 0.1f;
 
-    public InputAction interactKey;
+    public InputActionProperty interactKey;
 
     private void Update()
     {
-        if (interactKey.WasPressedThisFrame())
+        if (interactKey.action.IsPressed())
         {
             Interact();
         }
