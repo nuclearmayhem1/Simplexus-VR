@@ -8,11 +8,15 @@ public class InteractionManager : MonoBehaviour
 {
     public float radius = 0.1f;
 
-    public InputActionProperty interactKey;
+    public InputAction interactKey;
 
     private void Update()
     {
-        if (interactKey.action.IsPressed())
+        if (interactKey.WasPressedThisFrame())
+        {
+            Interact();
+        }
+        if (Input.GetKeyDown(KeyCode.I))
         {
             Interact();
         }
@@ -25,7 +29,7 @@ public class InteractionManager : MonoBehaviour
 
         foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
         {
-            if (col.TryGetComponent<IInteractable>(out IInteractable interactable))
+            if (col.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 float newDistance = Vector3.Distance(transform.position, col.transform.position);
 
