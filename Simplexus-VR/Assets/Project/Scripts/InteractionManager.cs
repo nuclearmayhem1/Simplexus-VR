@@ -7,17 +7,22 @@ using System.Linq;
 public class InteractionManager : MonoBehaviour
 {
     public float radius = 0.1f;
+    public float interactionCooldown = 1f;
+    private float interactionCooldownCurrent = 0;
 
     public InputActionProperty interactKey;
 
+
     private void Update()
     {
-        if (interactKey.action.IsPressed())
+        if (interactionCooldownCurrent > 0)
         {
-            Interact();
+            interactionCooldownCurrent -= Time.deltaTime;
         }
-        if (Input.GetKeyDown(KeyCode.I))
+
+        if (interactKey.action.WasPressedThisFrame() && interactionCooldownCurrent <= 0)
         {
+            interactionCooldownCurrent = interactionCooldown;
             Interact();
         }
     }
