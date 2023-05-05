@@ -1011,6 +1011,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 188232464029700549}
+  - component: {fileID: 1819796598}
+  - component: {fileID: 1819796599}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -1036,6 +1038,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1819796598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6003629143849478038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5af6d7057d5e2f44a4565fae9664228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  door: {fileID: 4199334785882898353}
+  solarpanel: {fileID: 0}
+  lever: {fileID: 0}
+--- !u!114 &1819796599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6003629143849478038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973c2da5d34188043b44d456e0006c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetHeight: 0
 --- !u!1 &6057809080603850545
 GameObject:
   m_ObjectHideFlags: 0

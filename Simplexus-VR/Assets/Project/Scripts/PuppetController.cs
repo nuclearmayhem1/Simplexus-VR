@@ -47,7 +47,7 @@ public class PuppetController : MonoBehaviour
         posRightHand = inputRightHandPos.action.ReadValue<Vector3>();
         rotLeftHand = inputLeftHandRot.action.ReadValue<Quaternion>();
         rotRightHand = inputRightHandRot.action.ReadValue<Quaternion>();
-        bool isJumping = inputJump.action.ReadValue<bool>();
+        //bool isJumping = inputJump.action.ReadValue<bool>();
 
         //Move
 

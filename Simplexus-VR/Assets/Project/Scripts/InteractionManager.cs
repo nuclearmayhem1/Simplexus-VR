@@ -19,7 +19,7 @@ public class InteractionManager : MonoBehaviour
         {
             interactionCooldownCurrent -= Time.deltaTime;
         }
-
+        
         if (interactKey.action.WasPressedThisFrame() && interactionCooldownCurrent <= 0)
         {
             interactionCooldownCurrent = interactionCooldown;
